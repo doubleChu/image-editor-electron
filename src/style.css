@@ -1,12 +1,10 @@
-@import url('https://fonts.googleapis.com/css?family=Muli:300,700&display=swap');
-
 * {
   box-sizing: border-box;
 }
 
 body {
   background-color: #fbfcfe;
-  font-family: 'Muli', sans-serif;
+  font-family: sans-serif;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -28,10 +26,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  align-items: flex-start;
-  margin: 40px 0;
+  margin: 0;
 }
 
+#theimg{
+  max-width: 800px;
+  height: auto;
+}
 
 #buttons-left{
     display: flex;
@@ -45,9 +46,11 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: flex-end;
+    margin: 0;
+    padding: 0;
 }
 button{
-    margin: 15px 0;
+    margin: 15px 10px;
 }
 /* .code {
   caret-color: transparent;
