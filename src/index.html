@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://qidian.gtimg.com/lulu/edge/css/common/ui/Button.css">
+    <title>Image Editor</title>
+</head>
+
+<body>
+    <div id="button-container-l">
+         <ul id="buttons-left">
+            <button class="ui-button" data-type="primary" onclick="grayscale()">打开文件</button>
+            <button class="ui-button" data-type="primary" onclick="grayscale()">保存文件</button>
+            <button class="ui-button" data-type="primary" onclick="grayscale()">另存为</button>
+        </ul>
+    </div>
+    <div id="container">
+        <div id="image-container">
+            <img src="./pkgkkp.jpg" alt="pic">
+        </div>
+    </div>
+        <div id="button-container-r">
+         <ul id="buttons-right">
+            <button class="ui-button" data-type="primary" onclick="grayscale()">打开文件</button>
+            <button class="ui-button" data-type="primary" onclick="grayscale()">保存文件</button>
+            <button class="ui-button" data-type="primary" onclick="grayscale()">另存为</button>
+        </ul>
+    </div>
+</body>
+<script src="./index.js"></script>
+
+</html>
