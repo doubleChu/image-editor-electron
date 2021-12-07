@@ -2,6 +2,8 @@ const {
     app,
     BrowserWindow
 } = require('electron')
+const remoteMain = require("@electron/remote/main");
+remoteMain.initialize()
 
 win = null
 
@@ -12,10 +14,9 @@ function createWindow() {
         webPreferences: {
             nodeIntegration: true, // 是否集成 Nodejs
             contextIsolation: false,
-            enableRemoteModule:true,
         }
     })
-    
+    remoteMain.enable(win.webContents)
     //win.removeMenu()
     win.loadFile('src/index.html')
     win.on('close', () => {
