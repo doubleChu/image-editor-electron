@@ -1,8 +1,16 @@
 const sharp = require('sharp')
-const showContent = document.getElementById('show_file_content')
+const remote = require('electron').remote;
 
-async function outputMeta() {
-    const metadata = await sharp("src/pkgkkp.jpg").metadata()
-    console.log(metadata);
-    showContent.innerText = metadata;
+function open_img() {
+    const dialog = remote.dialog
+dialog.showOpenDialog(remote.getCurrentWindow(), {
+    properties: ["openFile", "multiSelections"]
+}).then(result => {
+    if (result.canceled === false) {
+        console.log("Selected file paths:")
+        console.log(result.filePaths)
+    }
+}).catch(err => {
+    console.log(err)
+})
 }

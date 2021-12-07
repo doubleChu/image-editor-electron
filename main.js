@@ -12,6 +12,7 @@ function createWindow() {
         webPreferences: {
             nodeIntegration: true, // 是否集成 Nodejs
             contextIsolation: false,
+            enableRemoteModule:true,
         }
     })
     
