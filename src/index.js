@@ -1,6 +1,7 @@
 const path = require('path')
 const sharp = require('sharp')
 const remote = require('@electron/remote')
+
 const {
     extname
 } = require('path/posix')
@@ -67,3 +68,45 @@ function save_img() {
         console.log(err)
     });
 }
+
+async function graysc() {
+    let image = document.getElementById('theimg')
+    try {
+        await sharp('src' + image.getAttribute("src").substring(1))
+            .grayscale()
+            .toFile('src/edited-' + image.getAttribute("src").substring(2));
+            image.setAttribute("src", "./edited-" + image.getAttribute("src").substring(2))
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function cropImage() {
+    let image = document.getElementById('theimg')
+    new Dialog({
+        title: '修改昵称',
+        content: `<form id="editForm">
+            姓名：<input value="123" name="nickname" required>
+        </form>`,
+        buttons: [{
+            value: '修改',
+            form: 'editForm'
+        }],
+        onShow: function () {
+            this.querySelector('form').addEventListener('submit', event => {
+                event.preventDefault();
+                // 输入框内容赋值
+                eleOutput.textContent = this.querySelector('[name="nickname"]').value;
+                // 弹框关闭
+                this.remove();
+            });
+        }
+    });
+    // try {
+    //   await sharp('src' + image.getAttribute("src").substring(1))
+    //     .extract({ width: 500, height: 330, left: 120, top: 70  })
+    //     .toFile('src/edited-' + image.getAttribute("src").substring(2));
+    // } catch (error) {
+    //   console.log(error);
+    // }
+  }
