@@ -20,14 +20,15 @@
     </div>
     <div id="container">
         <div id="image-container">
-            <img id="theimg" src="./z8dg.png" alt="pic"/>
+            <!-- <img id="theimg" src="./z8dg.png" alt="pic"/> -->
+            <canvas id="theimg"></canvas>
         </div>
     </div>
     <div id="button-container-r">
         <ul id="buttons-right">
             <button class="ui-button" data-type="primary" onclick="graysc()">灰度图像</button>
             <button class="ui-button" data-type="primary" onclick="cropImage()">裁剪图像</button>
-            <button class="ui-button" data-type="primary" onclick="grayscale()">另存为</button>
+            <button class="ui-button" data-type="success" onclick="gaussianBlur()">高斯模糊</button>
         </ul>
     </div>
 </body>
