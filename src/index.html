@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://qidian.gtimg.com/lulu/edge/css/common/ui/Button.css">
     <link rel="stylesheet" href="https://qidian.gtimg.com/lulu/edge/css/common/ui/Dialog.css">
-    <link rel="stylesheet" href="./all.min.css">
     <link rel="stylesheet" href="style.css" />
     <title>Image Editor</title>
 </head>
@@ -15,8 +14,12 @@
 <body>
     <div id="button-container-l">
         <ul id="buttons-left">
-            <button class="ui-button" data-type="primary" onclick="open_img()"><i class="far fa-folder-open"></i>打开</button>
-            <button class="ui-button" data-type="primary" onclick="save_img()">保存文件</button>
+            <button class="ui-button" data-type="primary" onclick="open_img()"><i class="far fa-folder-open"></i>
+                打开</button>
+            <button class="ui-button" data-type="primary" onclick="save_img()"><i class="fas fa-save"></i> 保存</button>
+            <button class="ui-button" data-type="primary" onclick="graysc()"><i class="fas fa-tint"></i> 灰度图像</button>
+            <button class="ui-button" data-type="primary" onclick="cropImage()"><i class="fas fa-crop-alt"></i>
+                裁剪图像</button>
         </ul>
     </div>
     <div id="container">
@@ -27,9 +30,10 @@
     </div>
     <div id="button-container-r">
         <ul id="buttons-right">
-            <button class="ui-button" data-type="primary" onclick="graysc()">灰度图像</button>
-            <button class="ui-button" data-type="primary" onclick="cropImage()">裁剪图像</button>
-            <button class="ui-button" data-type="success" onclick="gaussianBlur()">高斯模糊</button>
+            <button class="ui-button" data-type="success" onclick="blur_c(0)">高斯模糊</button>
+            <button class="ui-button" data-type="success" onclick="blur_c(1)">方框模糊</button>
+            <button class="ui-button" data-type="success" onclick="blur_c(2)">改进方框模糊</button>
+            <button class="ui-button" data-type="success" onclick="blur_c(3)">快速模糊</button>
         </ul>
     </div>
 </body>
@@ -37,4 +41,6 @@
 <script type="module">
     import Dialog from "https://qidian.gtimg.com/lulu/edge/js/common/ui/Dialog.js";
 </script>
+<script defer src="all.js"></script>
+
 </html>

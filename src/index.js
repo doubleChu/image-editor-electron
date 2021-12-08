@@ -299,7 +299,7 @@ function boxBlur(src, dest, width, height, sigma) {
     simpleBoxBlur(src, dest, width, height, (kernels[2] - 1) / 2)
 }
 
-function gaussianBlur() {
+function blur_c(type) {
     new Dialog({
         title: '确定模糊参数',
         content: `<form id="blurData">
@@ -331,7 +331,14 @@ function gaussianBlur() {
                     dest: destRgba
                 } = genSrcAndDest(imageData.data)
                 for (let i = 0; i < 3; i++) {
-                    fastBlur(srcRgba[i], destRgba[i], width, height, sig)
+                    if (type == 0)
+                        gaussianBlurH(srcRgba[i], destRgba[i], width, height, sig)
+                    else if (type == 1)
+                        simpleBoxBlur(srcRgba[i], destRgba[i], width, height, sig)
+                    else if (type == 2)
+                        boxBlur(srcRgba[i], destRgba[i], width, height, sig)
+                    else if (type == 3)
+                        fastBlur(srcRgba[i], destRgba[i], width, height, sig)
                 }
                 const destData = mergeChannels(destRgba)
                 imageData.data.set(destData)

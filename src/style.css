@@ -29,30 +29,32 @@ body {
   margin: 0;
 }
 
-#theimg{
+#theimg {
   max-width: 800px;
   width: auto;
   height: auto;
 }
 
-#buttons-left{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
+#buttons-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
 }
 
-#buttons-right{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-end;
-    margin: 0;
-    padding: 0;
+#buttons-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  margin: 0;
+  padding: 0;
 }
-button{
-    margin: 15px 10px;
+
+button {
+  margin: 15px 10px;
 }
+
 /* .code {
   caret-color: transparent;
   border-radius: 5px;
