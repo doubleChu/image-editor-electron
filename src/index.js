@@ -144,18 +144,18 @@ async function cropImageS(w, h, t, l) {
     }
 }
 
-const genSrcAndDest = (data) => {
+const getSrcDestData = (data) => {
     const dataInt8 = new Uint8ClampedArray(data.buffer)
-    const simpleChannelLength = dataInt8.length / 4
-    const r = new Uint8ClampedArray(simpleChannelLength)
-    const g = new Uint8ClampedArray(simpleChannelLength)
-    const b = new Uint8ClampedArray(simpleChannelLength)
-    const a = new Uint8ClampedArray(simpleChannelLength)
-    const _r = new Uint8ClampedArray(simpleChannelLength)
-    const _g = new Uint8ClampedArray(simpleChannelLength)
-    const _b = new Uint8ClampedArray(simpleChannelLength)
-    const _a = new Uint8ClampedArray(simpleChannelLength)
-    for (let i = 0; i < simpleChannelLength; i++) {
+    const channelLength = dataInt8.length / 4
+    const r = new Uint8ClampedArray(channelLength)
+    const g = new Uint8ClampedArray(channelLength)
+    const b = new Uint8ClampedArray(channelLength)
+    const a = new Uint8ClampedArray(channelLength)
+    const _r = new Uint8ClampedArray(channelLength)
+    const _g = new Uint8ClampedArray(channelLength)
+    const _b = new Uint8ClampedArray(channelLength)
+    const _a = new Uint8ClampedArray(channelLength)
+    for (let i = 0; i < channelLength; i++) {
         _r[i] = r[i] = dataInt8[i * 4]
         _g[i] = g[i] = dataInt8[i * 4 + 1]
         _b[i] = b[i] = dataInt8[i * 4 + 2]
@@ -167,27 +167,27 @@ const genSrcAndDest = (data) => {
     }
 }
 
-function genKernelsForGaussian(sigma, n) {
+function getGaussianKernels(sigma, n) {
     const wIdeal = Math.sqrt((12 * Math.pow(sigma, 2)) / n + 1)
-    let wl = Math.floor(wIdeal)
-    if (wl % 2 === 0) {
-        wl--
+    let w_l = Math.floor(wIdeal)
+    if (w_l % 2 === 0) {
+        w_l--
     }
-    const wu = wl + 2
+    const wu = w_l + 2
     let m =
-        (12 * Math.pow(sigma, 2) - n * Math.pow(wl, 2) - 4 * n * wl - 3 * n) /
-        (-4 * wl - 4)
+        (12 * Math.pow(sigma, 2) - n * Math.pow(w_l, 2) - 4 * n * w_l - 3 * n) /
+        (-4 * w_l - 4)
     m = Math.round(m)
     const sizes = []
     for (let i = 0; i < n; i++) {
-        sizes.push(i < m ? wl : wu)
+        sizes.push(i < m ? w_l : wu)
     }
     return sizes
 }
 const mergeChannels = ([r, g, b, a]) => {
-    const simpleChannelLength = r.length
-    const data = new Uint8ClampedArray(simpleChannelLength * 4)
-    for (let i = 0; i < simpleChannelLength; i++) {
+    const channelLength = r.length
+    const data = new Uint8ClampedArray(channelLength * 4)
+    for (let i = 0; i < channelLength; i++) {
         data[4 * i] = r[i]
         data[4 * i + 1] = g[i]
         data[4 * i + 2] = b[i]
@@ -197,7 +197,7 @@ const mergeChannels = ([r, g, b, a]) => {
 }
 
 // horizontal fast motion blur
-function hFastMotionBlur(src, dest, width, height, radius) {
+function horiFastMotionBlur(src, dest, width, height, radius) {
     for (let i = 0; i < height; i++) {
         let accumulation = radius * src[i * width]
         for (let j = 0; j <= radius; j++) {
@@ -215,7 +215,7 @@ function hFastMotionBlur(src, dest, width, height, radius) {
 }
 
 // vertical fast motion blur
-function vFastMotionBlur(src, dest, width, height, radius) {
+function vertiFastMotionBlur(src, dest, width, height, radius) {
     for (let i = 0; i < width; i++) {
         let accumulation = radius * src[i]
         for (let j = 0; j <= radius; j++) {
@@ -233,12 +233,12 @@ function vFastMotionBlur(src, dest, width, height, radius) {
 }
 
 function _fastBlur(src, dest, width, height, radius) {
-    hFastMotionBlur(dest, src, width, height, radius)
-    vFastMotionBlur(src, dest, width, height, radius)
+    horiFastMotionBlur(dest, src, width, height, radius)
+    vertiFastMotionBlur(src, dest, width, height, radius)
 }
 
 function fastBlur(src, dest, width, height, sigma) {
-    const boxes = genKernelsForGaussian(sigma, 3)
+    const boxes = getGaussianKernels(sigma, 3)
     for (let i = 0; i < src.length; i++) {
         dest[i] = src[i]
     }
@@ -272,7 +272,7 @@ function gaussianBlurH(src, dest, width, height, sigma) {
     }
 }
 
-function simpleBoxBlur(src, dest, width, height, radius) {
+function simpBoxBlur(src, dest, width, height, radius) {
     for (let i = 0; i < width; i++) {
         for (let j = 0; j < height; j++) {
             let accumulation = 0
@@ -291,12 +291,12 @@ function simpleBoxBlur(src, dest, width, height, radius) {
 }
 
 function boxBlur(src, dest, width, height, sigma) {
-    const kernels = genKernelsForGaussian(sigma, 3)
+    const kernels = getGaussianKernels(sigma, 3)
     // radius * 2 + 1 = kernel size
-    simpleBoxBlur(src, dest, width, height, (kernels[0] - 1) / 2)
+    simpBoxBlur(src, dest, width, height, (kernels[0] - 1) / 2)
     // 注意这里要颠倒 src 和 dest 的顺序
-    simpleBoxBlur(dest, src, width, height, (kernels[1] - 1) / 2)
-    simpleBoxBlur(src, dest, width, height, (kernels[2] - 1) / 2)
+    simpBoxBlur(dest, src, width, height, (kernels[1] - 1) / 2)
+    simpBoxBlur(src, dest, width, height, (kernels[2] - 1) / 2)
 }
 
 function blur_c(type) {
@@ -329,12 +329,12 @@ function blur_c(type) {
                 const {
                     src: srcRgba,
                     dest: destRgba
-                } = genSrcAndDest(imageData.data)
+                } = getSrcDestData(imageData.data)
                 for (let i = 0; i < 3; i++) {
                     if (type == 0)
                         gaussianBlurH(srcRgba[i], destRgba[i], width, height, sig)
                     else if (type == 1)
-                        simpleBoxBlur(srcRgba[i], destRgba[i], width, height, sig)
+                        simpBoxBlur(srcRgba[i], destRgba[i], width, height, sig)
                     else if (type == 2)
                         boxBlur(srcRgba[i], destRgba[i], width, height, sig)
                     else if (type == 3)
